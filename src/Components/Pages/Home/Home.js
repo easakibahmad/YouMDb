@@ -7,6 +7,9 @@ import img3 from "../../../Images/image3.png";
 import img4 from "../../../Images/image4.webp";
 import img5 from "../../../Images/image5.jpg";
 import img6 from "../../../Images/image6.jpeg";
+import next from "../../../Images/next.webp";
+import { Link } from "react-router-dom";
+import Featured from "./Featured/Featured";
 
 const dataCarousel = [
   {
@@ -61,22 +64,38 @@ const dataUpNext = [
 
 const Home = () => {
   return (
-    <div className="grid grid-cols-5">
-      <div className="col-span-4">
-        <div className="grid grid-cols-6">
-          {dataCarousel.map((item) => (
-            <Carousel key={item.id} item={item}></Carousel>
-          ))}
+    <div data-theme="luxury">
+      <div className="grid grid-cols-5">
+        <div className="col-span-4">
+          <div className="grid grid-cols-6">
+            {dataCarousel.map((item) => (
+              <Carousel key={item.id} item={item}></Carousel>
+            ))}
+          </div>
+        </div>
+        <div data-theme="coffee" className="col-span-1">
+          <div className="grid grid-cols-1 h-4/5">
+            {dataUpNext.map((item) => (
+              <Upnext key={item.id} item={item}></Upnext>
+            ))}
+          </div>
+          <div className="flex justify-center mt-2">
+            <Link>
+              <button className="btn btn-outline btn-info">
+                watch more
+                <img className="ml-2 h-6 w-6 rounded-full" src={next} alt="" />
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
-      <div data-theme="coffee" className="col-span-1">
-        <div className="grid grid-cols-1 h-4/5">
-          {dataUpNext.map((item) => (
-            <Upnext key={item.id} item={item}></Upnext>
+      <div className="px-6">
+        <h1 className="text-3xl ml-8 my-8">Featured today</h1>
+
+        <div className="grid grid-cols-6">
+          {dataCarousel.map((item) => (
+            <Featured key={item.id} item={item}></Featured>
           ))}
-        </div>
-        <div className="flex justify-center mt-2">
-          <button className="btn btn-outline btn-info">watch more</button>
         </div>
       </div>
     </div>
