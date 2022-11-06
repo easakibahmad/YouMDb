@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Carousel from "./Carousel/Carousel";
 import Upnext from "./Upnext/Upnext";
 import img1 from "../../../Images/image1.jpg";
@@ -63,6 +63,13 @@ const dataUpNext = [
 ];
 
 const Home = () => {
+  const [movies, setMovies] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:4000/movies")
+      .then((res) => res.json())
+      .then((data) => setMovies(data));
+  }, []);
+
   return (
     <div data-theme="luxury">
       <div className="grid grid-cols-5">
@@ -93,8 +100,8 @@ const Home = () => {
         <h1 className="text-3xl ml-8 my-8">Featured today</h1>
 
         <div className="grid grid-cols-6">
-          {dataCarousel.map((item) => (
-            <Featured key={item.id} item={item}></Featured>
+          {movies.map((item) => (
+            <Featured key={item._id} item={item}></Featured>
           ))}
         </div>
       </div>
