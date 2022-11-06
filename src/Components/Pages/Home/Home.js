@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import Carousel from "./Carousel/Carousel";
 import Upnext from "./Upnext/Upnext";
 import img1 from "../../../Images/image1.jpg";
@@ -10,6 +9,7 @@ import img6 from "../../../Images/image6.jpeg";
 import next from "../../../Images/next.webp";
 import { Link } from "react-router-dom";
 import Featured from "./Featured/Featured";
+import { useEffect, useState } from "react";
 
 const dataCarousel = [
   {
@@ -63,12 +63,25 @@ const dataUpNext = [
 ];
 
 const Home = () => {
+  // const { movies, count } = useLoaderData();
+
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(3);
+
   const [movies, setMovies] = useState([]);
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
-    fetch("http://localhost:4000/movies")
+    const url = `http://localhost:4000/movies?page=${page}&size=${size}`;
+    fetch(url)
       .then((res) => res.json())
-      .then((data) => setMovies(data));
-  }, []);
+      .then((data) => {
+        setCount(data.count);
+        setMovies(data.movies);
+      });
+  }, [page, size]);
+
+  const pages = Math.ceil(count / size);
 
   return (
     <div data-theme="luxury">
@@ -103,6 +116,34 @@ const Home = () => {
           {movies.map((item) => (
             <Featured key={item._id} item={item}></Featured>
           ))}
+        </div>
+        <div className="flex justify-center py-8">
+          <p>selected page :{page}</p>
+          {[...Array(pages).keys()].map((number) => (
+            <button
+              className={
+                page === number
+                  ? "mx-4 border p-2 bg-white text-black"
+                  : "mx-4 border p-2"
+              }
+              key={number}
+              onClick={() => setPage(number)}
+            >
+              {number}
+            </button>
+          ))}
+          <select
+            className="bg-black text-white"
+            onChange={(event) => setSize(event.target.value)}
+          >
+            <option value="3" selected>
+              3
+            </option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
         </div>
       </div>
     </div>
